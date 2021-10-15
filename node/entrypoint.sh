@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/node/app
+cd /usr/src/app
 
 npm install
 
