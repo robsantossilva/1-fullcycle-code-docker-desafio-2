@@ -12,11 +12,24 @@ const config = {
 const conn = mysql.createConnection(config);
 
 
-app.get('/', (req, res) => {
-    const sql = `INSERT INTO people(name) values('Full Cycle Rocks!')`;
-    console.log(conn.query(sql));
+app.get('/', async (req, res) => {
 
-    res.send('<h1>Full Cycle Rocks!</h1>');
+    const sql = `INSERT INTO people(name) values('Full Cycle Rocks!')`;
+    conn.query(sql, (err, result) => {
+        if(err){
+            res.json(err);
+        }else{
+
+            const sqlSelect = `SELECT * FROM people WHERE id = ?`;
+            conn.query(sqlSelect, result.insertId, (err, result) => {
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json(result);
+                }
+            });
+        }
+    });
 })
 
 app.listen(3000, () => {
